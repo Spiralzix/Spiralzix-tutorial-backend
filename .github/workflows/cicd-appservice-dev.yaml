@@ -35,3 +35,43 @@ jobs:
         with:
           name: Unit Test Results
           path: "${{ github.workspace }}/coveragereport/*"
+
+  analyze:
+    name: SAST CodeQL
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+      url: https://github.com/Spiralzix/Spiralzix-tutorial-backend/security/code-scanning
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["csharp"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+    # THIS IS INTERNAL ACITON ACCESS ONLY INTERNAL OGANIZAITON
+    # - name: Quality Gate Check
+    #   uses: <owner>/quality-gate-action@main
+    #   with:
+    #     repository: <owner>/xxx-xxxxxx
+    #     severity: high
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
