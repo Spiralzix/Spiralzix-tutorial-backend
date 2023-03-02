@@ -1,0 +1,37 @@
+name: DEV - Dispatch
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  unitest:
+    name: UnitTest (XUnit)
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v2.1.0
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Unit Test (XUnit)
+        run: |
+          dotnet test --collect:"XPlat Code Coverage"
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          reportgenerator -reports:"./XUnit.Tests/TestResults/*/coverage.cobertura.xml" -targetdir:"./coveragereport" -reporttypes:Html
+
+      - name: Upload Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: Unit Test Results
+          path: "${{ github.workspace }}/coveragereport/*"
