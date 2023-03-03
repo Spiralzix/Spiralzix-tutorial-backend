@@ -76,18 +76,18 @@ jobs:
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
 
-repo-dispatch:
-  name: Repository Dispatch
-  runs-on: ubuntu-latest
-  needs: [unitest, analyze]
-  environment:
-    name: dev
-    url: https://github.com/spiralzix/spiralzix-pipeline/actions/workflows/dev-tutorial-backend-deploy.yml
-  steps:
-    - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v1
-      with:
-        token: ${{ secrets.WORKFLOW_TOKEN }}
-        repository: Spiralzix/Spiralzix-pipeline
-        event-type: user29-tutorial-be-cd-dev
-        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+  repo-dispatch:
+    name: Repository Dispatch
+    runs-on: ubuntu-latest
+    needs: [unitest, analyze]
+    environment:
+      name: dev
+      url: https://github.com/spiralzix/spiralzix-pipeline/actions/workflows/dev-tutorial-backend-deploy.yml
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+          repository: Spiralzix/Spiralzix-pipeline
+          event-type: user29-tutorial-be-cd-dev
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
