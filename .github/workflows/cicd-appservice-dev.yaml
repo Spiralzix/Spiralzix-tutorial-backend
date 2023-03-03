@@ -83,12 +83,11 @@ repo-dispatch:
   environment:
     name: dev
     url: https://github.com/Spiralzix/Spiralzix-pipeline/actions/workflows/dev-tutorial-backend-deploy.yml
-
- steps:
+  steps:
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v1
       with:
         token: ${{ secrets.WORKFLOW_TOKEN }}
-        repository: <owner>/<username>-pipeline
+        repository: Spiralzix/Spiralzix-pipeline
         event-type: user29-tutorial-be-cd-dev
         client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
