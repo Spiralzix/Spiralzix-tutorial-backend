@@ -82,7 +82,7 @@ repo-dispatch:
   needs: [unitest, analyze]
   environment:
     name: dev
-    url: https://github.com/Spiralzix/Spiralzix-pipeline/actions/workflows/dev-tutorial-backend-deploy.yml
+    url: https://github.com/spiralzix/spiralzix-pipeline/actions/workflows/dev-tutorial-backend-deploy.yml
   steps:
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v1
